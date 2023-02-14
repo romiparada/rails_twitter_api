@@ -82,6 +82,8 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
+    faker (3.1.1)
+      i18n (>= 1.8.11, < 2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.12.0)
@@ -182,7 +184,11 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   debug
+<<<<<<< HEAD
   factory_bot_rails (~> 6.2)
+=======
+  faker (~> 3.1, >= 3.1.1)
+>>>>>>> b1fa08d (Install faker gem)
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.2)
