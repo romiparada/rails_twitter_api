@@ -19,3 +19,7 @@ group :development, :test do
   gem 'rubocop', '~> 1.45', '>= 1.45.1', require: false
   gem 'rubocop-rails', '~> 2.17', '>= 2.17.4', require: false
 end
+
+group :test do
+  gem 'shoulda-matchers', '~> 5.3'
+end
