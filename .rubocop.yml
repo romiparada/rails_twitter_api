@@ -1,0 +1,52 @@
+require: rubocop-rails
+
+AllCops:
+  NewCops: enable
+
+Layout/LineLength:
+  Max: 160
+  AllowedPatterns:
+    - "^ *#"
+    - '\A#'
+  Exclude:
+    - db/migrate/*
+
+Metrics/AbcSize:
+  Max: 19
+  Exclude:
+    - db/migrate/*
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+  Exclude:
+    - spec/**/*
+    - db/migrate/*
+
+Metrics/MethodLength:
+  Max: 40
+  Exclude:
+    - db/migrate/*
+
+Metrics/ModuleLength:
+  Max: 200
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - db/migrate/*
+
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - staging
+    - production
+    - review
+
+Style/Documentation:
+  Enabled: false
