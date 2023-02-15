@@ -11,6 +11,10 @@ gem 'puma', '~> 5.0'
 gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
+group :development do
+  gem 'letter_opener', '~> 1.8', '>= 1.8.1'
+end
+
 group :development, :test do
   gem 'debug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '~> 2.8', '>= 2.8.1'
