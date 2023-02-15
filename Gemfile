@@ -8,6 +8,7 @@ ruby '3.2.0'
 gem 'blue_printer', '~> 0.1.5'
 gem 'bootsnap', require: false
 gem 'devise', '~> 4.8', '>= 4.8.1'
+gem 'devise-jwt', '~> 0.10.0'
 gem 'pg', '~> 1.1'
 gem 'puma', '~> 5.0'
 gem 'rails', '~> 7.0.4', '>= 7.0.4.2'
