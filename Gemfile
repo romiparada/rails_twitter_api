@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.2.0'
 
-gem 'blue_printer', '~> 0.1.5'
+gem 'blueprinter', '~> 0.25.3'
 gem 'bootsnap', require: false
 gem 'devise', '~> 4.8', '>= 4.8.1'
 gem 'devise-jwt', '~> 0.10.0'
