@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe 'POST /api/users/sign_in' do
+RSpec.describe 'POST /api/users/sign_in', type: :request do
   subject { post user_session_path, params:, as: :json }
 
-  let!(:user) { create(:user, password: 'juan_123') }
+  let!(:user) { create(:user) }
 
   let(:params) do
     {
@@ -29,6 +29,12 @@ RSpec.describe 'POST /api/users/sign_in' do
       subject
       expect(headers['Authorization']).to match(/Bearer .*/)
     end
+
+    it 'returns email and created_at fields' do
+      subject
+      expect(json['email']).to eq(user.email)
+      expect(json['created_at']).to eq(user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC'))
+    end
   end
 
   context 'when the credentials are incorrect' do
@@ -41,7 +47,7 @@ RSpec.describe 'POST /api/users/sign_in' do
         expect(response).to have_http_status(401)
       end
 
-      it 'returns an invalid bearer token in the heades' do
+      it 'does not return an Authorization header' do
         subject
         expect(headers['Authorization']).to be_nil
       end
@@ -56,7 +62,7 @@ RSpec.describe 'POST /api/users/sign_in' do
         expect(response).to have_http_status(401)
       end
 
-      it 'returns an invalid bearer token in the heades' do
+      it 'does not return an Authorization header' do
         subject
         expect(headers['Authorization']).to be_nil
       end
