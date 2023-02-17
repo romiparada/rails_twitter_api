@@ -26,7 +26,7 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
       expect(response).to have_http_status(:created)
     end
 
-    it 'respons with valid user id' do
+    it 'responds with valid user id' do
       subject
       user_id = json['id']
       expect(User.exists?(user_id)).to be_truthy
@@ -48,7 +48,7 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'respons with taken email message' do
+        it 'responds with taken email message' do
           subject
           expect(errors['email'][0]).to match(/taken/)
         end
@@ -61,7 +61,7 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'respons with blank email message' do
+        it 'responds with blank email message' do
           subject
           expect(errors['email'][0]).to match(/blank/)
         end
@@ -75,7 +75,7 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'respons with invalid email message' do
+        it 'responds with invalid email message' do
           subject
           expect(errors['email'][0]).to match(/invalid/)
         end
