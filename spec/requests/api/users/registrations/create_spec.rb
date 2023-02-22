@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'POST /api/users/sign_up', type: :request do
+RSpec.describe 'POST /api/users', type: :request do
   subject { post user_registration_path, params:, as: :json }
 
   let(:params) do
@@ -26,7 +26,7 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
       expect(response).to have_http_status(:created)
     end
 
-    it 'responds with valid user id' do
+    it 'returns a valid user id' do
       subject
       user_id = json['id']
       expect(User.exists?(user_id)).to be_truthy
@@ -34,7 +34,7 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
   end
 
   context 'when the credentials are incorrect' do
-    context 'when the email incorrect' do
+    context 'when the email is incorrect' do
       let(:user) { build(:user) }
       let(:password) { user.password }
       let(:password_confirmation) { user.password }
@@ -48,22 +48,23 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'responds with taken email message' do
+        it 'returns an email taken error message' do
           subject
-          expect(errors['email'][0]).to match(/taken/)
+          expect(errors['email']).to eq(['has already been taken'])
         end
       end
 
       context 'when the email is empty' do
         let(:email) { '' }
+
         it 'returns 422 status code' do
           subject
           expect(response).to have_http_status(422)
         end
 
-        it 'responds with blank email message' do
+        it 'returns a blank email error message' do
           subject
-          expect(errors['email'][0]).to match(/blank/)
+          expect(errors['email']).to eq(["can't be blank"])
         end
       end
 
@@ -75,9 +76,9 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'responds with invalid email message' do
+        it 'returns an invalid email error message' do
           subject
-          expect(errors['email'][0]).to match(/invalid/)
+          expect(errors['email']).to eq(['is invalid'])
         end
       end
     end
@@ -94,9 +95,9 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'responds with short password message' do
+        it 'returns a short password error message' do
           subject
-          expect(errors['password'][0]).to match(/short/)
+          expect(errors['password']).to eq(['is too short (minimum is 6 characters)'])
         end
       end
 
@@ -108,9 +109,9 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'responds with blank password message' do
+        it 'returns a blank password error message' do
           subject
-          expect(errors['password'][0]).to match(/blank/)
+          expect(errors['password']).to eq(["can't be blank"])
         end
       end
     end
@@ -128,9 +129,9 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'responds with match password_confirmation message' do
+        it 'returns a match password_confirmation error message' do
           subject
-          expect(errors['password_confirmation'][0]).to match(/match/)
+          expect(errors['password_confirmation']).to eq(["doesn't match Password"])
         end
       end
 
@@ -142,9 +143,9 @@ RSpec.describe 'POST /api/users/sign_up', type: :request do
           expect(response).to have_http_status(422)
         end
 
-        it 'responds with match password_confirmation message' do
+        it 'returns a match password_confirmation error message' do
           subject
-          expect(errors['password_confirmation'][0]).to match(/match/)
+          expect(errors['password_confirmation']).to match(["doesn't match Password"])
         end
       end
     end
