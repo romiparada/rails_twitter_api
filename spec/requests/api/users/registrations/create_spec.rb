@@ -21,15 +21,39 @@ RSpec.describe 'POST /api/users', type: :request do
     let(:password) { user.password }
     let(:password_confirmation) { user.password }
 
-    it 'returns 201 status code' do
-      subject
-      expect(response).to have_http_status(:created)
+    context 'when all params are sent' do
+      it 'returns 201 status code' do
+        subject
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'returns a valid user id' do
+        subject
+        user_id = json['id']
+        expect(User.exists?(user_id)).to be_truthy
+      end
     end
 
-    it 'returns a valid user id' do
-      subject
-      user_id = json['id']
-      expect(User.exists?(user_id)).to be_truthy
+    context 'when the password_confirmation param is not sent' do
+      let(:params) do
+        {
+          user: {
+            email:,
+            password:
+          }
+        }
+      end
+
+      it 'returns 201 status code' do
+        subject
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'returns a valid user id' do
+        subject
+        user_id = json['id']
+        expect(User.exists?(user_id)).to be_truthy
+      end
     end
   end
 
@@ -132,26 +156,6 @@ RSpec.describe 'POST /api/users', type: :request do
         it 'returns a match password_confirmation error message' do
           subject
           expect(errors['password_confirmation']).to eq(["doesn't match Password"])
-        end
-      end
-
-      context 'when the password_confirmation is missing' do
-        let(:params) do
-          {
-            user: {
-              email:,
-              password:
-            }
-          }
-        end
-
-        it 'returns 422 status code' do
-          expect(response).to have_http_status(422)
-        end
-
-        it 'returns with match password_confirmation message' do
-          subject
-          expect(errors['password_confirmation']).to eq([' '])
         end
       end
 
