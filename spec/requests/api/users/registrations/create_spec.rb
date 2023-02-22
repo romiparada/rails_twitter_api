@@ -135,6 +135,26 @@ RSpec.describe 'POST /api/users', type: :request do
         end
       end
 
+      context 'when the password_confirmation is missing' do
+        let(:params) do
+          {
+            user: {
+              email:,
+              password:
+            }
+          }
+        end
+
+        it 'returns 422 status code' do
+          expect(response).to have_http_status(422)
+        end
+
+        it 'returns with match password_confirmation message' do
+          subject
+          expect(errors['password_confirmation']).to eq([' '])
+        end
+      end
+
       context 'when the password_confirmation differs' do
         let(:password_confirmation) { build(:user).password }
 
