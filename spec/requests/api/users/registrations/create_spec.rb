@@ -15,12 +15,12 @@ RSpec.describe 'POST /api/users', type: :request do
     }
   end
 
-  context 'when the credentials are correct' do
-    let!(:user) { build(:user) }
-    let(:email) { user.email }
-    let(:password) { user.password }
-    let(:password_confirmation) { user.password }
+  let(:user) { build(:user) }
+  let(:email) { user.email }
+  let(:password) { user.password }
+  let(:password_confirmation) { user.password }
 
+  context 'when the credentials are correct' do
     context 'when all params are sent' do
       it 'returns 201 status code' do
         subject
@@ -59,10 +59,6 @@ RSpec.describe 'POST /api/users', type: :request do
 
   context 'when the credentials are incorrect' do
     context 'when the email is incorrect' do
-      let(:user) { build(:user) }
-      let(:password) { user.password }
-      let(:password_confirmation) { user.password }
-
       context 'when the email is taken' do
         let(:email) { user.email }
         before { user.save }
@@ -108,9 +104,6 @@ RSpec.describe 'POST /api/users', type: :request do
     end
 
     context 'when the password is incorrect' do
-      let(:email) { build(:user).email }
-      let(:password_confirmation) { password }
-
       context 'when the password is invalid' do
         let(:password) { Faker::Internet.password(min_length: 2, max_length: 5) }
 
@@ -141,10 +134,6 @@ RSpec.describe 'POST /api/users', type: :request do
     end
 
     context 'when the password_confirmation is incorrect' do
-      let(:user) { build(:user) }
-      let(:email) { user.email }
-      let(:password) { user.password }
-
       context 'when the password_confirmation is empty' do
         let(:password_confirmation) { '' }
 
@@ -160,7 +149,7 @@ RSpec.describe 'POST /api/users', type: :request do
       end
 
       context 'when the password_confirmation differs' do
-        let(:password_confirmation) { build(:user).password }
+        let(:password_confirmation) { Faker::Internet.password(min_length: 8) }
 
         it 'returns 422 status code' do
           subject
