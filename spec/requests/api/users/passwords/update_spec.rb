@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'PUT /users/password?reset_password_token', type: :request do
+RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
   subject { put user_password_path, params:, as: :json }
 
   let(:user) { create(:user) }
