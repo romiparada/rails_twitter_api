@@ -26,7 +26,7 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
 
     it 'resets password' do
       subject
-      expect(updated_user.valid_password?(password)).to be_truthy
+      expect(user.reload.valid_password?(password)).to be_truthy
     end
   end
 
@@ -47,7 +47,7 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
         end
 
         it 'does not reset password' do
-          expect { subject }.to_not(change { updated_user.password })
+          expect { subject }.to_not(change { user.reload.password })
         end
 
         it 'returns an invalid error message' do
@@ -65,7 +65,7 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
         end
 
         it 'does not reset password' do
-          expect { subject }.to_not(change { updated_user.password })
+          expect { subject }.to_not(change { user.reload.password })
         end
 
         it 'returns an invalid error message' do
@@ -83,7 +83,7 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
         end
 
         it 'does not reset password' do
-          expect { subject }.to_not(change { updated_user.password })
+          expect { subject }.to_not(change { user.reload.password })
         end
 
         it 'returns an invalid error message' do
@@ -109,7 +109,7 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
         end
 
         it 'does not reset password' do
-          expect { subject }.to_not(change { updated_user.password })
+          expect { subject }.to_not(change { user.reload.password })
         end
 
         it 'returns an invalid error message' do
@@ -127,7 +127,7 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
         end
 
         it 'does not reset password' do
-          expect { subject }.to_not(change { updated_user.password })
+          expect { subject }.to_not(change { user.reload.password })
         end
 
         it 'returns an invalid error message' do
@@ -145,7 +145,7 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
         end
 
         it 'does not reset password' do
-          expect { subject }.to_not(change { updated_user.password })
+          expect { subject }.to_not(change { user.reload.password })
         end
 
         it 'returns an invalid error message' do
