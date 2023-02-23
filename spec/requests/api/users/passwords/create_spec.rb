@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'POST /users/password', type: :request do
+RSpec.describe 'POST /api/users/password', type: :request do
   subject { post user_password_path, params:, as: :json }
 
   let(:user) { create(:user) }
