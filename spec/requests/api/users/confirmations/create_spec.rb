@@ -15,21 +15,41 @@ RSpec.describe 'POST /api/users/confirmation', type: :request do
   end
 
   context 'when the email is correct' do
-    it 'returns 201 status code' do
-      subject
-      expect(response).to have_http_status(:created)
+    context 'when the user is not confirmed' do
+      it 'returns 201 status code' do
+        subject
+        expect(response).to have_http_status(:created)
+      end
+
+      it 'sends mail with reset passwords instructions' do
+        expect { subject }.to change { ActionMailer::Base.deliveries.count }.from(1).to(2)
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.to).to eq([email])
+        expect(mail.body).to match('confirmation_token')
+      end
+
+      it 'stores the confirmation token in the user ' do
+        subject
+        expect(user.reload.confirmation_token).to_not be_nil
+      end
     end
 
-    it 'sends mail with reset passwords instructions' do
-      expect { subject }.to change { ActionMailer::Base.deliveries.count }.from(1).to(2)
-      mail = ActionMailer::Base.deliveries.last
-      expect(mail.to).to eq([email])
-      expect(mail.body).to match('confirmation_token')
-    end
+    context 'when the user is already confirmed' do
+      before { user.confirm }
 
-    it 'stores the confirmation token in the user ' do
-      subject
-      expect(user.reload.confirmation_token).to_not be_nil
+      it 'returns 422 status code' do
+        subject
+        expect(response).to have_http_status(422)
+      end
+
+      it 'does not sends confirmation instructions' do
+        expect { subject }.to_not(change { ActionMailer::Base.deliveries.count })
+      end
+
+      it 'returns a not found error message' do
+        subject
+        expect(errors['email']).to eq(['was already confirmed, please try signing in'])
+      end
     end
   end
 
