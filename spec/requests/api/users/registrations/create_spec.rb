@@ -162,7 +162,7 @@ RSpec.describe 'POST /api/users', type: :request do
       end
 
       context 'when the password_confirmation differs' do
-        let(:password_confirmation) { Faker::Internet.password(min_length: 8) }
+        let(:password_confirmation) { 'invalidpasswordconfirmation' }
 
         it 'returns 422 status code' do
           subject

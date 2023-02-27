@@ -53,7 +53,7 @@ RSpec.describe 'POST /api/users/sign_in', type: :request do
 
     context 'when the credentials are incorrect' do
       context 'when the email does not exist' do
-        let(:email) { Faker::Internet.email }
+        let(:email) { Faker::Internet.email(name: 'invalid') }
 
         it 'returns 401 status code' do
           subject
@@ -67,7 +67,7 @@ RSpec.describe 'POST /api/users/sign_in', type: :request do
       end
 
       context 'when the password is incorrect' do
-        let(:password) { Faker::Internet.password }
+        let(:password) { 'invalidpassword' }
 
         it 'returns 401 status code' do
           subject
