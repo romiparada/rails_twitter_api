@@ -6,4 +6,8 @@ Rails.application.routes.draw do
     registrations: 'api/users/registrations',
     passwords: 'api/users/passwords'
   }
+
+  scope '/api', module: :api do
+    resource :user, only: :show
+  end
 end

@@ -3,5 +3,5 @@
 class UserSerializer < ApplicationSerializer
   identifier :id
 
-  fields :email, :created_at
+  fields :name, :bio, :website, :email, :created_at
 end
