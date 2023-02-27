@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe 'POST /api/users/sign_in', type: :request do
   subject { post user_session_path, params:, as: :json }
 
-  let!(:user) { create(:user) }
   let(:email) { user.email }
   let(:password) { user.password }
 
@@ -19,6 +18,8 @@ RSpec.describe 'POST /api/users/sign_in', type: :request do
   end
 
   context 'when the user is not confirmed' do
+    let!(:user) { create(:user, :unconfirmed) }
+
     it 'returns 401 status code' do
       subject
       expect(response).to have_http_status(401)
@@ -31,7 +32,7 @@ RSpec.describe 'POST /api/users/sign_in', type: :request do
   end
 
   context 'when the user is confirmed' do
-    before { user.confirm }
+    let!(:user) { create(:user) }
 
     context 'when the credentials are correct' do
       it 'returns 200 status code' do

@@ -18,8 +18,6 @@ RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
     }
   end
 
-  before { user.confirm }
-
   context 'when the params are correct' do
     it 'returns 204 status code' do
       subject

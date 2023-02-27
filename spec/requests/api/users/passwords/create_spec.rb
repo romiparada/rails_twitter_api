@@ -14,8 +14,6 @@ RSpec.describe 'POST /api/users/password', type: :request do
     }
   end
 
-  before { user.confirm }
-
   context 'when the email is correct' do
     it 'returns 201 status code' do
       subject
@@ -23,7 +21,7 @@ RSpec.describe 'POST /api/users/password', type: :request do
     end
 
     it 'sends mail with reset passwords instructions' do
-      expect { subject }.to change { ActionMailer::Base.deliveries.count }.from(1).to(2)
+      expect { subject }.to change { ActionMailer::Base.deliveries.count }.from(0).to(1)
       mail = ActionMailer::Base.deliveries.last
       expect(mail.to).to eq([email])
       expect(mail.body).to match('reset_password_token')
@@ -36,7 +34,7 @@ RSpec.describe 'POST /api/users/password', type: :request do
   end
 
   context 'when the email is incorrect' do
-    let(:email) { Faker::Internet.email }
+    let(:email) { Faker::Internet.email(name: 'invalid') }
 
     it 'returns 422 status code' do
       subject
