@@ -27,7 +27,7 @@ RSpec.describe 'POST /api/users/password', type: :request do
       expect(mail.body).to match('reset_password_token')
     end
 
-    it 'stores the reset password token in the user ' do
+    it 'stores the reset password token in the user' do
       subject
       expect(user.reload.reset_password_token).to_not be_nil
     end
