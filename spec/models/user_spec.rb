@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   describe 'validations' do
-    subject { build(:user, :full) }
+    subject { build(:user) }
 
     context 'email' do
       it { is_expected.to validate_presence_of(:email) }
