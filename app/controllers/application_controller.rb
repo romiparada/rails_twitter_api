@@ -9,13 +9,10 @@ class ApplicationController < ActionController::API
   private
 
   def require_user_fields
-    user = current_user
-    missing_fileds = %i[name birthdate username].select do |field|
-      user.send(field).blank?
-    end
-    return if missing_fileds.blank?
+    missing_fields = current_user.missing_require_fields
+    return if missing_fields.blank?
 
-    render json: { errors: "#{missing_fileds.join(', ')} fields are required" },
+    render json: { errors: "#{missing_fields.join(', ')} fields are required" },
            status: :unprocessable_entity
   end
 end

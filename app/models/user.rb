@@ -14,18 +14,17 @@ class User < ApplicationRecord
 
   validate :over_eighteen
 
+  def missing_require_fields
+    %i[name birthdate username].select do |field|
+      send(field).blank?
+    end
+  end
+
   private
 
   def over_eighteen
     return if birthdate.blank?
 
-    errors.add(:birthdate, 'User must be at least 18 years old') if years_between(birthdate, Time.current.to_date) < 18
-  end
-
-  def years_between(date_from, date_until)
-    years = date_until.year - date_from.year
-    years -= 1 if date_from.month > date_until.month || (date_from.month == date_until.month && (date_from.day > date_until.day))
-
-    years
+    errors.add(:birthdate, 'User must be at least 18 years old') if birthdate > 18.years.ago
   end
 end
