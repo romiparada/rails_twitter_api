@@ -29,6 +29,11 @@ RSpec.describe 'POST /api/users/sign_in', type: :request do
       subject
       expect(headers['Authorization']).to be_nil
     end
+
+    it 'returns confirm email error message' do
+      subject
+      expect(json['error']).to match('You have to confirm your email address before continuing.')
+    end
   end
 
   context 'when the user is confirmed' do

@@ -21,14 +21,14 @@ RSpec.describe 'POST /api/users/confirmation', type: :request do
         expect(response).to have_http_status(:created)
       end
 
-      it 'sends mail with reset passwords instructions' do
+      it 'sends mail with confirmation instructions' do
         expect { subject }.to change { ActionMailer::Base.deliveries.count }.from(1).to(2)
         mail = ActionMailer::Base.deliveries.last
         expect(mail.to).to eq([email])
         expect(mail.body).to match('confirmation_token')
       end
 
-      it 'stores the confirmation token in the user ' do
+      it 'stores the confirmation token in the user' do
         subject
         expect(user.reload.confirmation_token).to_not be_nil
       end
