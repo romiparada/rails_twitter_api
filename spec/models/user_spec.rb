@@ -18,6 +18,17 @@ RSpec.describe User, type: :model do
     context 'username' do
       it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
       it { is_expected.to validate_length_of(:username).is_at_least(2).is_at_most(20) }
+
+      it 'can not change value more than once' do
+        subject.save
+        is_expected.to_not allow_value(Faker::Internet.username).for(:username)
+      end
+
+      it 'can change value when is blank' do
+        subject.username = nil
+        subject.save
+        is_expected.to allow_value(Faker::Internet.username).for(:username)
+      end
     end
 
     context 'name' do

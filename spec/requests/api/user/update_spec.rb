@@ -5,15 +5,16 @@ require 'rails_helper'
 RSpec.describe 'PUT /api/user', type: :request do
   subject { put user_path, params:, headers:, as: :json }
 
-  let(:user) { create(:user) }
+  let(:user) { create(:user, username: nil) }
   let(:headers) { auth_headers(user) }
-  let(:new_attributes) { attributes_for(:user).except(:username, :confirmed_at) }
+  let(:new_attributes) { attributes_for(:user).except(:confirmed_at) }
   let(:name) { new_attributes[:name] }
   let(:bio) { new_attributes[:bio] }
   let(:website) { new_attributes[:website] }
   let(:email) { new_attributes[:email] }
   let(:birthdate) { new_attributes[:birthdate] }
   let(:password) { new_attributes[:password] }
+  let(:username) { new_attributes[:username] }
 
   let(:params) do
     {
@@ -23,7 +24,8 @@ RSpec.describe 'PUT /api/user', type: :request do
         website:,
         email:,
         birthdate:,
-        password:
+        password:,
+        username:
       }
     }
   end
@@ -54,7 +56,8 @@ RSpec.describe 'PUT /api/user', type: :request do
           change { user.bio }.to(eq(bio)).and \
             change { user.website }.to(eq(website)).and \
               change { user.email }.to(eq(email)).and \
-                change { user.valid_password?(password) }.to be_truthy
+                change { user.valid_password?(password) }.to(be_truthy).and \
+                  change { user.username }.to(eq(username))
       end
     end
 
@@ -168,16 +171,15 @@ RSpec.describe 'PUT /api/user', type: :request do
       end
 
       context 'when the handle (username) is set' do
-        let(:params) do
-          {
-            user: {
-              username: 'newusername'
-            }
-          }
-        end
+        before { user.update({ username: 'username' }) }
 
         it 'does not update the user' do
           expect { subject }.to_not(change { user.reload.updated_at })
+        end
+
+        it 'returns can not change username error message' do
+          subject
+          expect(errors['username']).to eq(['can only be changed one time'])
         end
       end
 

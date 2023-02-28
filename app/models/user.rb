@@ -13,6 +13,7 @@ class User < ApplicationRecord
   validates :username, uniqueness: { case_sensitive: false }, length: { in: 2..20 }, allow_blank: true
 
   validate :over_18_years_old
+  validate :update_username_once, on: :update, if: :will_save_change_to_username?
 
   def missing_required_fields
     %i[name birthdate username].select do |field|
@@ -26,5 +27,9 @@ class User < ApplicationRecord
     return if birthdate.blank?
 
     errors.add(:birthdate, 'User must be at least 18 years old') if birthdate > 18.years.ago
+  end
+
+  def update_username_once
+    errors.add(:username, 'can only be changed one time') if username_in_database.present?
   end
 end
