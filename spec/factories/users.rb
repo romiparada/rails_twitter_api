@@ -11,7 +11,7 @@ FactoryBot.define do
     end
 
     trait :full do
-      name { Faker::Internet.password(min_length: 2) }
+      name { Faker::Internet.username(specifier: 2) }
       bio { Faker::Lorem.paragraph_by_chars(number: 160) }
       website do
         ["http://#{Faker::Internet.domain_word}.com", "http://www.#{Faker::Internet.domain_word}.com",
