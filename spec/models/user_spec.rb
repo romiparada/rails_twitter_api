@@ -29,6 +29,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'validates website format' do
+      it { is_expected.to allow_value('http://www.valid.com').for(:website) }
+      it { is_expected.to allow_value('https://www.valid.com').for(:website) }
+      it { is_expected.to allow_value('http://valid.com').for(:website) }
+      it { is_expected.to allow_value('https://valid.com').for(:website) }
       it { is_expected.to_not allow_value(Faker::Internet.domain_name).for(:website) }
     end
 
