@@ -22,12 +22,13 @@ RSpec.describe 'DELETE /api/users/sign_out', type: :request do
   context 'when the credentials are incorrect' do
     context 'when the auth header is not set' do
       let(:headers) { {} }
+
       it 'returns 204 status code' do
         subject
         expect(response).to have_http_status(204)
       end
 
-      it 'revokes the user jwt token' do
+      it 'does not revoke the user jwt token' do
         expect { subject }.to_not(change { user.reload.jti })
       end
     end
@@ -40,7 +41,7 @@ RSpec.describe 'DELETE /api/users/sign_out', type: :request do
         expect(response).to have_http_status(204)
       end
 
-      it 'revokes the user jwt token' do
+      it 'does not revoke the user jwt token' do
         expect { subject }.to_not(change { user.reload.jti })
       end
     end
