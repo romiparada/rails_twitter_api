@@ -22,6 +22,8 @@ RSpec.describe 'POST /api/users', type: :request do
 
   context 'when the credentials are correct' do
     context 'when all params are sent' do
+      let(:user_id) { json['id'] }
+
       it 'returns 201 status code' do
         subject
         expect(response).to have_http_status(:created)
@@ -29,8 +31,19 @@ RSpec.describe 'POST /api/users', type: :request do
 
       it 'returns a valid user id' do
         subject
-        user_id = json['id']
         expect(User.exists?(user_id)).to be_truthy
+      end
+
+      it 'sends a confirmation email' do
+        expect { subject }.to change { ActionMailer::Base.deliveries.count }.from(0).to(1)
+        mail = ActionMailer::Base.deliveries.last
+        expect(mail.to).to eq([email])
+        expect(mail.body).to match('confirmation_token')
+      end
+
+      it 'stores the confirmation token in the user ' do
+        subject
+        expect(User.find(user_id).confirmation_token).to_not be_nil
       end
     end
 
@@ -149,7 +162,7 @@ RSpec.describe 'POST /api/users', type: :request do
       end
 
       context 'when the password_confirmation differs' do
-        let(:password_confirmation) { Faker::Internet.password(min_length: 8) }
+        let(:password_confirmation) { 'invalidpasswordconfirmation' }
 
         it 'returns 422 status code' do
           subject

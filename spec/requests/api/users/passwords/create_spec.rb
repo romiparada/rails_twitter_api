@@ -34,7 +34,7 @@ RSpec.describe 'POST /api/users/password', type: :request do
   end
 
   context 'when the email is incorrect' do
-    let(:email) { Faker::Internet.email }
+    let(:email) { Faker::Internet.email(name: 'invalid') }
 
     it 'returns 422 status code' do
       subject
