@@ -6,7 +6,7 @@ RSpec.describe 'DELETE /api/users/sign_out', type: :request do
   subject { delete destroy_user_session_path, params: {}, headers:, as: :json }
 
   let(:user) { create(:user) }
-  let(:headers) { Devise::JWT::TestHelpers.auth_headers({}, user) }
+  let(:headers) { auth_headers(user) }
 
   context 'when the credentials are correct' do
     it 'returns 204 status code' do
@@ -33,7 +33,7 @@ RSpec.describe 'DELETE /api/users/sign_out', type: :request do
     end
 
     context 'when the auth header is incorrect' do
-      let(:headers) { Devise::JWT::TestHelpers.auth_headers({}, create(:user)) }
+      let(:headers) { auth_headers(create(:user)) }
 
       it 'returns 204 status code' do
         subject

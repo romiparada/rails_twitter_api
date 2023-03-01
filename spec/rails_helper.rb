@@ -66,4 +66,5 @@ RSpec.configure do |config|
 
   config.include ResponseHelper, type: :request
   config.include Devise::JWT::TestHelpers
+  config.include AuthHelper, type: :request
 end
