@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'POST /api/users/confirmation', type: :request do
   subject { post user_confirmation_path, params:, as: :json }
 
-  let!(:user) { create(:user, :unconfirmed) }
+  let!(:user) { create(:user, :unconfirmed, :without_profile_data) }
   let(:email) { user.email }
 
   let(:params) do

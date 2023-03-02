@@ -5,7 +5,6 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { Faker::Internet.password(min_length: 8) }
     confirmed_at { DateTime.now }
-
     name { Faker::Internet.username(specifier: 2) }
     bio { Faker::Lorem.paragraph_by_chars(number: 160) }
     website do
@@ -17,6 +16,14 @@ FactoryBot.define do
 
     trait :unconfirmed do
       confirmed_at { nil }
+    end
+
+    trait :without_profile_data do
+      name { nil }
+      bio { nil }
+      website { nil }
+      birthdate { nil }
+      username { nil }
     end
   end
 end

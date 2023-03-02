@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'PUT /api/users/password?reset_password_token', type: :request do
   subject { put user_password_path, params:, as: :json }
 
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :without_profile_data) }
   let(:reset_password_token) { user.send(:set_reset_password_token) }
   let(:password) { Faker::Internet.password(min_length: 8) }
 

@@ -15,7 +15,7 @@ RSpec.describe 'POST /api/users', type: :request do
     }
   end
 
-  let(:user) { build(:user) }
+  let(:user) { build(:user, :without_profile_data) }
   let(:email) { user.email }
   let(:password) { user.password }
   let(:password_confirmation) { user.password }

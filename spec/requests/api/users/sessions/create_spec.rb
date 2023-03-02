@@ -18,7 +18,7 @@ RSpec.describe 'POST /api/users/sign_in', type: :request do
   end
 
   context 'when the user is not confirmed' do
-    let!(:user) { create(:user, :unconfirmed) }
+    let!(:user) { create(:user, :unconfirmed, :without_profile_data) }
 
     it 'returns 401 status code' do
       subject
@@ -37,7 +37,7 @@ RSpec.describe 'POST /api/users/sign_in', type: :request do
   end
 
   context 'when the user is confirmed' do
-    let!(:user) { create(:user) }
+    let!(:user) { create(:user, :without_profile_data) }
 
     context 'when the credentials are correct' do
       it 'returns 200 status code' do
