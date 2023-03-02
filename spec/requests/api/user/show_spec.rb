@@ -21,6 +21,7 @@ RSpec.describe 'GET /api/user', type: :request do
       expect(json['website']).to eq(user.website)
       expect(json['email']).to eq(user.email)
       expect(json['created_at']).to eq(user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC'))
+      expect(json['username']).to eq(user.username)
     end
   end
 

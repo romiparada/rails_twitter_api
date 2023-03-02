@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     passwords: 'api/users/passwords'
   }
 
-  scope '/api', module: :api do
+  scope '/api', module: :api, defaults: { format: :json } do
     resource :user, only: :show
   end
 end
