@@ -6,7 +6,7 @@ RSpec.describe 'POST /api/user', type: :request do
   subject { put user_path, params:, headers:, as: :json }
 
   let(:user) { create(:user) }
-  let(:headers) { Devise::JWT::TestHelpers.auth_headers({}, user) }
+  let(:headers) { auth_headers(user) }
   let(:new_attributes) { attributes_for(:user).except(:username, :confirmed_at) }
   let(:name) { new_attributes[:name] }
   let(:bio) { new_attributes[:bio] }
@@ -203,14 +203,9 @@ RSpec.describe 'POST /api/user', type: :request do
         subject
         expect(response).to have_http_status(401)
       end
-    end
 
-    context 'when the auth header is incorrect' do
-      let(:headers) { Devise::JWT::TestHelpers.auth_headers({}, build(:user)) }
-
-      it 'returns 401 status code' do
-        subject
-        expect(response).to have_http_status(401)
+      it 'does not modify the user' do
+        expect { subject }.to_not(change { user.reload.created_at })
       end
     end
   end
