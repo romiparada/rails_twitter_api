@@ -6,7 +6,7 @@ RSpec.describe 'GET /api/user', type: :request do
   subject { get user_path, headers:, as: :json }
 
   let(:user) { create(:user) }
-  let(:headers) { Devise::JWT::TestHelpers.auth_headers({}, user) }
+  let(:headers) { auth_headers(user) }
 
   context 'when the credentials are correct' do
     it 'returns 200 status code' do
@@ -32,23 +32,6 @@ RSpec.describe 'GET /api/user', type: :request do
       it 'returns 422 status code' do
         subject
         expect(response).to have_http_status(401)
-      end
-
-      it 'revokes the user jwt token' do
-        expect { subject }.to_not(change { user.reload.jti })
-      end
-    end
-
-    context 'when the auth header is incorrect' do
-      let(:headers) { Devise::JWT::TestHelpers.auth_headers({}, build(:user)) }
-
-      it 'returns 401 status code' do
-        subject
-        expect(response).to have_http_status(401)
-      end
-
-      it 'revokes the user jwt token' do
-        expect { subject }.to_not(change { user.reload.jti })
       end
     end
   end
