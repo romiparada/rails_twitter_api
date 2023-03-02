@@ -5,12 +5,12 @@ module Api
     skip_before_action :user_profile_filled, only: %i[show update]
 
     def show
-      render json: UserSerializer.render(current_user)
+      render json: UserSerializer.render(current_user, view: :full)
     end
 
     def update
       current_user.update!(user_params)
-      render json: UserSerializer.render(current_user)
+      render json: UserSerializer.render(current_user, view: :full)
     end
 
     private

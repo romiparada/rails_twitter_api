@@ -6,7 +6,7 @@ module Api
       respond_to :json
       def create
         super do |user|
-          render json: UserSerializer.render(user), status: :created
+          render json: UserSerializer.render(user, view: :full), status: :created
           return
         end
       end

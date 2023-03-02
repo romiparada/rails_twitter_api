@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
   before_action :user_profile_filled, unless: :devise_controller?
 
   rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
   private
 
@@ -21,5 +22,10 @@ class ApplicationController < ActionController::API
   def unprocessable_entity(error)
     errors = error.respond_to?(:record) ? error.record.errors : nil
     render json: { errors: }, status: :unprocessable_entity
+  end
+
+  def not_found(error)
+    errors = error.respond_to?(:message) ? error.message : nil
+    render json: { errors: }, status: :not_found
   end
 end
