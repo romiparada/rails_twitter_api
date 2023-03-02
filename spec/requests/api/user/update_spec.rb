@@ -198,6 +198,7 @@ RSpec.describe 'POST /api/user', type: :request do
   context 'when the credentials are incorrect' do
     context 'when the auth header is not set' do
       let(:headers) { {} }
+
       it 'returns 401 status code' do
         subject
         expect(response).to have_http_status(401)
