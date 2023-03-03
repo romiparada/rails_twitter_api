@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'POST /api/user', type: :request do
+RSpec.describe 'PUT /api/user', type: :request do
   subject { put user_path, params:, headers:, as: :json }
 
   let(:user) { create(:user) }
@@ -38,21 +38,23 @@ RSpec.describe 'POST /api/user', type: :request do
       it 'returns user profile info' do
         subject
         user.reload
-        expect(json['name']).to eq(user.name)
-        expect(json['bio']).to eq(user.bio)
-        expect(json['website']).to eq(user.website)
-        expect(json['email']).to eq(user.email)
-        expect(json['created_at']).to eq(user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC'))
+        json_res = json
+        expect(json_res['name']).to eq(user.name)
+        expect(json_res['bio']).to eq(user.bio)
+        expect(json_res['website']).to eq(user.website)
+        expect(json_res['email']).to eq(user.email)
+        expect(json_res['created_at']).to eq(user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC'))
       end
 
       it 'modifies user profile info' do
-        subject
-        user.reload
-        expect(user.name).to eq(name)
-        expect(user.bio).to eq(bio)
-        expect(user.website).to eq(website)
-        expect(user.email).to eq(email)
-        expect(user.reload.valid_password?(password)).to be_truthy
+        expect do
+          subject
+          user.reload
+        end.to change { user.name }.to(eq(name)).and \
+          change { user.bio }.to(eq(bio)).and \
+            change { user.website }.to(eq(website)).and \
+              change { user.email }.to(eq(email)).and \
+                change { user.valid_password?(password) }.to be_truthy
       end
     end
 
@@ -70,8 +72,8 @@ RSpec.describe 'POST /api/user', type: :request do
           expect(errors['name']).to eq(['is too short (minimum is 2 characters)'])
         end
 
-        it 'does not change the name' do
-          expect { subject }.to_not(change { user.reload.name })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
 
@@ -88,8 +90,8 @@ RSpec.describe 'POST /api/user', type: :request do
           expect(errors['bio']).to eq(['is too long (maximum is 160 characters)'])
         end
 
-        it 'does not change the bio' do
-          expect { subject }.to_not(change { user.reload.bio })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
 
@@ -106,8 +108,8 @@ RSpec.describe 'POST /api/user', type: :request do
           expect(errors['website']).to eq(['is invalid'])
         end
 
-        it 'does not change the website' do
-          expect { subject }.to_not(change { user.reload.website })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
 
@@ -124,8 +126,8 @@ RSpec.describe 'POST /api/user', type: :request do
           expect(errors['email']).to eq(['is invalid'])
         end
 
-        it 'does not change the email' do
-          expect { subject }.to_not(change { user.reload.email })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
 
@@ -142,8 +144,8 @@ RSpec.describe 'POST /api/user', type: :request do
           expect(errors['birthdate']).to eq(['User must be at least 18 years old'])
         end
 
-        it 'does not change the birthdate' do
-          expect { subject }.to_not(change { user.reload.birthdate })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
 
@@ -160,8 +162,8 @@ RSpec.describe 'POST /api/user', type: :request do
           expect(errors['password']).to eq(['is too short (minimum is 6 characters)'])
         end
 
-        it 'does not change the password' do
-          expect { subject }.to_not(change { user.reload.password })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
 
@@ -174,8 +176,8 @@ RSpec.describe 'POST /api/user', type: :request do
           }
         end
 
-        it 'does not change the username' do
-          expect { subject }.to_not(change { user.reload.username })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
 
@@ -188,8 +190,8 @@ RSpec.describe 'POST /api/user', type: :request do
           }
         end
 
-        it 'does not change created_at field' do
-          expect { subject }.to_not(change { user.reload.created_at })
+        it 'does not update the user' do
+          expect { subject }.to_not(change { user.reload.updated_at })
         end
       end
     end
@@ -204,8 +206,8 @@ RSpec.describe 'POST /api/user', type: :request do
         expect(response).to have_http_status(401)
       end
 
-      it 'does not modify the user' do
-        expect { subject }.to_not(change { user.reload.created_at })
+      it 'does not update the user' do
+        expect { subject }.to_not(change { user.reload.updated_at })
       end
     end
   end
