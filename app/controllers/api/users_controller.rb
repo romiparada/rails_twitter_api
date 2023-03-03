@@ -9,11 +9,8 @@ module Api
     end
 
     def update
-      if current_user.update(user_params)
-        render json: UserSerializer.render(current_user)
-      else
-        render json: { errors: current_user.errors.messages }, status: :unprocessable_entity
-      end
+      current_user.update!(user_params)
+      render json: UserSerializer.render(current_user)
     end
 
     private
