@@ -9,18 +9,14 @@ module Api
     end
 
     def update
-      user = current_user
-      if user.update(user_params)
-        render json: UserSerializer.render(user)
-      else
-        render json: { errors: user.errors.messages }, status: :unprocessable_entity
-      end
+      current_user.update!(user_params)
+      render json: UserSerializer.render(current_user)
     end
 
     private
 
     def user_params
-      params.require(:user).permit(:name, :bio, :website, :email, :birthdate, :password)
+      params.require(:user).permit(%i[name bio website email birthdate password username])
     end
   end
 end

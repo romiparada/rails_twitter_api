@@ -6,6 +6,8 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user!
   before_action :user_profile_filled, unless: :devise_controller?
 
+  rescue_from ActiveRecord::RecordInvalid, with: :unprocessable_entity
+
   private
 
   def user_profile_filled
@@ -14,5 +16,10 @@ class ApplicationController < ActionController::API
 
     render json: { errors: "#{missing_fields.join(', ')} fields are required" },
            status: :unprocessable_entity
+  end
+
+  def unprocessable_entity(error)
+    errors = error.respond_to?(:record) ? error.record.errors : nil
+    render json: { errors: }, status: :unprocessable_entity
   end
 end

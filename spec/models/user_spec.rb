@@ -55,6 +55,34 @@ RSpec.describe User, type: :model do
         end
       end
     end
+
+    describe '#update_username_once' do
+      context 'when the username is not set' do
+        before do
+          subject.username = nil
+          subject.save
+          subject.username = 'newusername'
+        end
+
+        it 'does not add errors to user' do
+          subject.send(:update_username_once)
+
+          expect(subject.errors[:username]).to be_empty
+        end
+      end
+
+      context 'when the username is set' do
+        before do
+          subject.save
+          subject.username = 'newusername'
+        end
+
+        it 'adds errors to user' do
+          subject.send(:update_username_once)
+          expect(subject.errors[:username]).to eq(['can only be changed one time'])
+        end
+      end
+    end
   end
 
   describe '#missing_required_fields' do
