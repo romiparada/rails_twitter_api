@@ -177,7 +177,7 @@ RSpec.describe 'PUT /api/user', type: :request do
           expect { subject }.to_not(change { user.reload.updated_at })
         end
 
-        it 'returns can not change username error message' do
+        it 'returns the correct error message' do
           subject
           expect(errors['username']).to eq(['can only be changed one time'])
         end
