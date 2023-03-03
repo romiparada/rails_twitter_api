@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'PUT /api/user', type: :request do
   subject { put user_path, params:, headers:, as: :json }
 
-  let(:user) { create(:user, username: nil) }
+  let(:user) { create(:user, :without_profile_data) }
   let(:headers) { auth_headers(user) }
   let(:new_attributes) { attributes_for(:user).except(:confirmed_at) }
   let(:name) { new_attributes[:name] }

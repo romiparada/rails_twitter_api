@@ -18,17 +18,6 @@ RSpec.describe User, type: :model do
     context 'username' do
       it { is_expected.to validate_uniqueness_of(:username).case_insensitive }
       it { is_expected.to validate_length_of(:username).is_at_least(2).is_at_most(20) }
-
-      it 'can not change value more than once' do
-        subject.save
-        is_expected.to_not allow_value(Faker::Internet.username).for(:username)
-      end
-
-      it 'can change value when is blank' do
-        subject.username = nil
-        subject.save
-        is_expected.to allow_value(Faker::Internet.username).for(:username)
-      end
     end
 
     context 'name' do
@@ -63,6 +52,34 @@ RSpec.describe User, type: :model do
         it 'adds errors to user' do
           subject.send(:over_18_years_old)
           expect(subject.errors[:birthdate]).to eq(['User must be at least 18 years old'])
+        end
+      end
+    end
+
+    describe '#update_username_once' do
+      context 'when the username is not set' do
+        before do
+          subject.username = nil
+          subject.save
+          subject.username = 'newusername'
+        end
+
+        it 'does not add errors to user' do
+          subject.send(:update_username_once)
+
+          expect(subject.errors[:username]).to be_empty
+        end
+      end
+
+      context 'when the username is set' do
+        before do
+          subject.save
+          subject.username = 'newusername'
+        end
+
+        it 'adds errors to user' do
+          subject.send(:update_username_once)
+          expect(subject.errors[:username]).to eq(['can only be changed one time'])
         end
       end
     end
