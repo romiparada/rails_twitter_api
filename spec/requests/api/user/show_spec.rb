@@ -8,7 +8,7 @@ RSpec.describe 'GET /api/user', type: :request do
   let(:user) { create(:user) }
   let(:headers) { auth_headers(user) }
 
-  context 'when the credentials are correct' do
+  context 'when the valid auth headers are passed' do
     it 'returns 200 status code' do
       subject
       expect(response).to have_http_status(200)
@@ -16,16 +16,17 @@ RSpec.describe 'GET /api/user', type: :request do
 
     it 'returns user profile info' do
       subject
-      expect(json['name']).to eq(user.name)
-      expect(json['bio']).to eq(user.bio)
-      expect(json['website']).to eq(user.website)
-      expect(json['email']).to eq(user.email)
-      expect(json['created_at']).to eq(user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC'))
-      expect(json['username']).to eq(user.username)
+      json_res = json
+      expect(json_res['name']).to eq(user.name)
+      expect(json_res['bio']).to eq(user.bio)
+      expect(json_res['website']).to eq(user.website)
+      expect(json_res['email']).to eq(user.email)
+      expect(json_res['created_at']).to eq(user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC'))
+      expect(json_res['username']).to eq(user.username)
     end
   end
 
-  context 'when the credentials are incorrect' do
+  context 'when invalid auth headers are passed' do
     context 'when the auth header is not set' do
       let(:headers) { {} }
 
