@@ -9,6 +9,6 @@ Rails.application.routes.draw do
 
   scope '/api', module: :api, defaults: { format: :json } do
     resource :user, only: %i[show update]
-    resources :tweets, only: %i[create]
+    resources :tweets, only: :create
   end
 end

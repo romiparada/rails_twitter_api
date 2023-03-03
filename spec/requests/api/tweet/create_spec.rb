@@ -18,7 +18,9 @@ RSpec.describe 'POST /api/tweets', type: :request do
     }
   end
 
-  context 'when the parms are correct' do
+  context 'when the params are correct' do
+    let(:id) { json['id'] }
+
     it 'returns 201 status code' do
       subject
       expect(response).to have_http_status(:created)
@@ -26,8 +28,14 @@ RSpec.describe 'POST /api/tweets', type: :request do
 
     it 'returns a valid tweet id' do
       subject
-      expect(Tweet.exists?(json['id'])).to be_truthy
-      expect(Tweet.find(json['id']).user).to eq(user)
+      expect(Tweet.exists?(id)).to be_truthy
+    end
+
+    it 'creates a tweet associated with the user' do
+      subject
+      tweet = Tweet.find(id)
+      expect(tweet.user).to eq(user)
+      expect(user.reload.tweets).to include(tweet)
     end
   end
 
