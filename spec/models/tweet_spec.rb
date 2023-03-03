@@ -3,16 +3,16 @@
 require 'rails_helper'
 
 RSpec.describe Tweet, type: :model do
-  describe 'validations' do
-    subject { build(:tweet) }
+  subject { build(:tweet) }
 
+  describe 'validations' do
     context 'content' do
       it { is_expected.to validate_presence_of(:content) }
       it { is_expected.to validate_length_of(:content).is_at_most(280) }
     end
+  end
 
-    context 'user' do
-      it { is_expected.to belong_to(:user) }
-    end
+  describe 'relationships' do
+    it { is_expected.to belong_to(:user) }
   end
 end
