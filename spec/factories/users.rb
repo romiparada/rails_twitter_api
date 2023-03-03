@@ -25,5 +25,9 @@ FactoryBot.define do
       birthdate { nil }
       username { nil }
     end
+
+    trait :with_tweets do
+      tweets { create_list :tweet, 5 }
+    end
   end
 end

@@ -10,5 +10,9 @@ Rails.application.routes.draw do
   scope '/api', module: :api, defaults: { format: :json } do
     resource :user, only: %i[show update]
     resources :tweets, only: %i[create show]
+
+    scope '/users/:username', as: 'user', username: %r{[^/]+} do
+      resources :tweets, only: %i[index]
+    end
   end
 end
