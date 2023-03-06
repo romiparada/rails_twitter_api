@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'POST /api/tweets/[:id]/likes', type: :request do
+RSpec.describe 'POST /api/tweets/:id/likes', type: :request do
   subject { post like_tweet_path(id), headers:, as: :json }
 
   let(:user) { create(:user) }
@@ -11,15 +11,31 @@ RSpec.describe 'POST /api/tweets/[:id]/likes', type: :request do
   let(:id) { tweet.id }
 
   context 'when the params are correct' do
-    it 'returns 204 status code' do
-      subject
-      expect(response).to have_http_status(:no_content)
+    context 'when the user likes others tweet' do
+      it 'returns 204 status code' do
+        subject
+        expect(response).to have_http_status(:no_content)
+      end
+
+      it 'associates user and tweet' do
+        subject
+        expect(tweet.reload.liked_by).to include(user)
+        expect(user.reload.tweets_liked).to include(tweet)
+      end
     end
 
-    it 'creates association between user and tweet' do
-      subject
-      expect(tweet.reload.users_liked).to include(user)
-      expect(user.reload.tweets_liked).to include(tweet)
+    context 'when the user likes his own tweet' do
+      let(:tweet) { create(:tweet, user:) }
+
+      it 'returns 404 status code' do
+        subject
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+      it 'returns the correct error message' do
+        subject
+        expect(errors['user']).to eq(["can't like his own tweet"])
+      end
     end
   end
 
