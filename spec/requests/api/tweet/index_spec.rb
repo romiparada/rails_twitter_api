@@ -2,12 +2,16 @@
 
 require 'rails_helper'
 
-RSpec.describe 'GET /api/users/[:username]/tweets', type: :request do
+RSpec.describe 'GET /api/users/:username/tweets', type: :request do
   subject { get user_tweets_path(username), headers:, as: :json }
 
-  let(:user) { create(:user, :with_tweets) }
+  let(:user) { create(:user) }
   let(:username) { user.username }
   let(:headers) { auth_headers(user) }
+
+  before do
+    user.tweets = create_list(:tweet, 5)
+  end
 
   context 'when the credentials are correct' do
     it 'returns 200 status code' do

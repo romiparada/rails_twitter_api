@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :tweets, only: %i[create show]
 
     scope '/users/:username', as: 'user', username: %r{[^/]+} do
-      resources :tweets, only: %i[index]
+      resources :tweets, only: :index
     end
   end
 end

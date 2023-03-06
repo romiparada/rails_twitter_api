@@ -3,7 +3,6 @@
 module Api
   class TweetsController < ApplicationController
     def index
-      user = User.find_by!(username: params[:username])
       render json: TweetSerializer.render(user.tweets.order(created_at: :desc))
     end
 
@@ -21,6 +20,10 @@ module Api
 
     def tweets_params
       params.require(:tweet).permit(%i[content])
+    end
+
+    def user
+      User.find_by!(username: params[:username])
     end
   end
 end
