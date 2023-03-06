@@ -11,6 +11,10 @@ Rails.application.routes.draw do
     resource :user, only: %i[show update]
     resources :tweets, only: %i[create show]
 
+    scope '/tweets/:tweet_id', as: 'tweet' do
+      resources :likes, only: %i[create]
+    end
+
     scope '/users/:username', as: 'user', username: %r{[^/]+} do
       resources :tweets, only: :index
     end
