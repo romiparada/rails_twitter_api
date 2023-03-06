@@ -16,6 +16,12 @@ module Api
       render json: TweetSerializer.render(tweet), status: :created
     end
 
+    def like
+      tweet = Tweet.find(params[:id])
+      current_user.tweets_liked << tweet
+      render status: :no_content
+    end
+
     private
 
     def tweets_params

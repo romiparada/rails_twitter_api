@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe 'POST /api/tweets/[:tweet_id]/likes', type: :request do
-  subject { post tweet_likes_path(tweet_id), headers:, as: :json }
+RSpec.describe 'POST /api/tweets/[:id]/likes', type: :request do
+  subject { post like_tweet_path(id), headers:, as: :json }
 
   let(:user) { create(:user) }
   let(:headers) { auth_headers(user) }
   let(:tweet) { create(:tweet) }
-  let(:tweet_id) { tweet.id }
+  let(:id) { tweet.id }
 
   context 'when the params are correct' do
     it 'returns 204 status code' do
@@ -25,7 +25,7 @@ RSpec.describe 'POST /api/tweets/[:tweet_id]/likes', type: :request do
 
   context 'when the params are incorrect' do
     context 'when the tweet id is invalid' do
-      let(:tweet_id) { 'invalid' }
+      let(:id) { 'invalid' }
 
       it 'returns 404 status code' do
         subject
