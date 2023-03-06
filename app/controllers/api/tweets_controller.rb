@@ -3,7 +3,7 @@
 module Api
   class TweetsController < ApplicationController
     def create
-      tweet = Tweet.create!(tweets_params.merge({ user: current_user }))
+      tweet = current_user.tweets.create!(tweets_params)
       render json: TweetSerializer.render(tweet), status: :created
     end
 

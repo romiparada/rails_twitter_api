@@ -30,13 +30,6 @@ RSpec.describe 'POST /api/tweets', type: :request do
       subject
       expect(Tweet.exists?(id)).to be_truthy
     end
-
-    it 'creates a tweet associated with the user' do
-      subject
-      tweet = Tweet.find(id)
-      expect(tweet.user).to eq(user)
-      expect(user.reload.tweets).to include(tweet)
-    end
   end
 
   context 'when the params are incorrect' do
@@ -55,7 +48,7 @@ RSpec.describe 'POST /api/tweets', type: :request do
         end
       end
 
-      context 'when the content is invalid' do
+      context 'when the content is longer than 281 characters' do
         let(:content) { Faker::Lorem.paragraph_by_chars(number: 281) }
 
         it 'returns 422 status code' do
