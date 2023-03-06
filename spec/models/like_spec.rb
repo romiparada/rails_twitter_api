@@ -4,23 +4,24 @@ require 'rails_helper'
 
 RSpec.describe Like, type: :model do
   subject { build(:like, user:, tweet:) }
-  let(:user) { build(:user) }
-  let(:tweet) { build(:tweet) }
+
+  let(:user) { create(:user) }
+  let(:tweet) { create(:tweet) }
 
   describe 'validations' do
-    context '#like_own_tweet' do
-      context 'when user like other tweet' do
-        it 'does not add errors to like' do
-          subject.send(:like_own_tweet)
+    context '#likes_own_tweet' do
+      context 'when user likes other tweet' do
+        it 'does not add errors to likes' do
+          subject.send(:likes_own_tweet)
           expect(subject.errors[:user]).to be_empty
         end
       end
 
-      context 'when user like his own tweet' do
+      context 'when user likes his own tweet' do
         let(:user) { tweet.user }
 
-        it 'adds errors to like' do
-          subject.send(:like_own_tweet)
+        it 'adds errors to likes' do
+          subject.send(:likes_own_tweet)
           expect(subject.errors[:user]).to eq(["can't like his own tweet"])
         end
       end

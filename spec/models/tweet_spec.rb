@@ -15,6 +15,6 @@ RSpec.describe Tweet, type: :model do
   describe 'relationships' do
     it { is_expected.to belong_to(:user) }
     it { is_expected.to have_many(:likes).dependent(:destroy) }
-    it { is_expected.to have_many(:users_liked).through(:likes).source(:user) }
+    it { is_expected.to have_many(:liked_by).through(:likes).source(:user) }
   end
 end

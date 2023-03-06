@@ -5,5 +5,5 @@ class Tweet < ApplicationRecord
 
   belongs_to :user, counter_cache: true
   has_many :likes, dependent: :destroy
-  has_many :users_liked, through: :likes, source: :user
+  has_many :liked_by, through: :likes, source: :user
 end
