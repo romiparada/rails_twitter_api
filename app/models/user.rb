@@ -8,6 +8,8 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   has_many :tweets, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :tweets_liked, through: :likes, source: :tweet
 
   validates :name, length: { minimum: 2 }, allow_blank: true
   validates :bio, length: { maximum: 160 }, allow_blank: true
