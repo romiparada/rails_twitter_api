@@ -7,6 +7,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
+  has_many :tweets, dependent: :destroy
+
   validates :name, length: { minimum: 2 }, allow_blank: true
   validates :bio, length: { maximum: 160 }, allow_blank: true
   validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
