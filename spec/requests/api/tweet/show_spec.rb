@@ -38,7 +38,7 @@ RSpec.describe 'GET /api/tweets/[:id]', type: :request do
 
       it 'returns a not found error message' do
         subject
-        expect(errors).to eq("Couldn't find Tweet with 'id'=0")
+        expect(errors).to eq('resource could not be found')
       end
     end
 

@@ -24,8 +24,7 @@ class ApplicationController < ActionController::API
     render json: { errors: }, status: :unprocessable_entity
   end
 
-  def not_found(error)
-    errors = error.respond_to?(:message) ? error.message : nil
-    render json: { errors: }, status: :not_found
+  def not_found
+    render json: { errors: 'resource could not be found' }, status: :not_found
   end
 end
