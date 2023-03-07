@@ -10,6 +10,10 @@ class User < ApplicationRecord
   has_many :tweets, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :tweets_liked, through: :likes, source: :tweet
+  has_many :followers, foreign_key: :follower_id, class_name: 'Follow', dependent: :destroy, inverse_of: :follower
+  has_many :followeds, foreign_key: :followed_id, class_name: 'Follow', dependent: :destroy, inverse_of: :followed
+  has_many :follower_users, through: :followers, source: :follower
+  has_many :followed_users, through: :followeds, source: :followed
 
   validates :name, length: { minimum: 2 }, allow_blank: true
   validates :bio, length: { maximum: 160 }, allow_blank: true

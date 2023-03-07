@@ -105,5 +105,9 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:tweets) }
     it { is_expected.to have_many(:likes).dependent(:destroy) }
     it { is_expected.to have_many(:tweets_liked).through(:likes).source(:tweet) }
+    it { is_expected.to have_many(:followers).dependent(:destroy) }
+    it { is_expected.to have_many(:follower_users).through(:followers).source(:follower) }
+    it { is_expected.to have_many(:followeds).dependent(:destroy) }
+    it { is_expected.to have_many(:followed_users).through(:followeds).source(:followed) }
   end
 end
