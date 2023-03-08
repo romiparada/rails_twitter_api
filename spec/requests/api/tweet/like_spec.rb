@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'POST /api/tweets/:id/likes', type: :request do
+RSpec.describe 'POST /api/tweets/:id/like', type: :request do
   subject { post like_tweet_path(id), headers:, as: :json }
 
   let(:user) { create(:user) }
@@ -27,7 +27,7 @@ RSpec.describe 'POST /api/tweets/:id/likes', type: :request do
     context 'when the user likes his own tweet' do
       let(:tweet) { create(:tweet, user:) }
 
-      it 'returns 404 status code' do
+      it 'returns 422 status code' do
         subject
         expect(response).to have_http_status(:unprocessable_entity)
       end
