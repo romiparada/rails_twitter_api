@@ -7,13 +7,17 @@ module Api
     end
 
     def show
-      tweet = Tweet.find(params[:id])
       render json: TweetSerializer.render(tweet)
     end
 
     def create
       tweet = current_user.tweets.create!(tweets_params)
       render json: TweetSerializer.render(tweet), status: :created
+    end
+
+    def like
+      current_user.tweets_liked << tweet
+      render status: :no_content
     end
 
     private
@@ -24,6 +28,10 @@ module Api
 
     def user
       User.find_by!(username: params[:username])
+    end
+
+    def tweet
+      Tweet.find(params[:id])
     end
   end
 end
