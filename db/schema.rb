@@ -28,7 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_06_202426) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "likes_count"
+    t.integer "likes_count", default: 0
     t.index ["user_id"], name: "index_tweets_on_user_id"
   end
 
@@ -40,7 +40,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_06_202426) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "jti", null: false
+    t.string "jti", default: "", null: false
     t.string "confirmation_token"
     t.datetime "confirmed_at", precision: nil
     t.datetime "confirmation_sent_at", precision: nil
@@ -49,7 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_06_202426) do
     t.string "website"
     t.date "birthdate"
     t.string "username"
-    t.integer "tweets_count"
+    t.integer "tweets_count", default: 0
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
