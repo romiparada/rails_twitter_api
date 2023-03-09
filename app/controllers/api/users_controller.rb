@@ -13,10 +13,19 @@ module Api
       render json: UserSerializer.render(current_user, view: :full)
     end
 
+    def follow
+      current_user.following_users << user
+      render status: :no_content
+    end
+
     private
 
     def user_params
       params.require(:user).permit(%i[name bio website email birthdate password username])
+    end
+
+    def user
+      User.find_by!(username: params[:username])
     end
   end
 end

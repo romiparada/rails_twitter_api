@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'GET /api/users/:username/tweets', type: :request do
+RSpec.describe 'GET /api/users/:user_username/tweets', type: :request do
   subject { get user_tweets_path(username), headers:, as: :json }
 
   let(:user) { create(:user) }
