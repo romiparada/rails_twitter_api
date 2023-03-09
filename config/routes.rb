@@ -16,9 +16,6 @@ Rails.application.routes.draw do
 
     resources :users, only: [], param: :username, username: %r{[^/]+} do
       post :follow, on: :member
-    end
-
-    scope '/users/:username', as: 'user', username: %r{[^/]+} do
       resources :tweets, only: :index
     end
   end

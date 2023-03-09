@@ -7,8 +7,8 @@ RSpec.describe 'POST /api/users/:username/follow', type: :request do
 
   let(:user) { create(:user) }
   let(:headers) { auth_headers(user) }
-  let(:followed) { create(:user) }
-  let(:username) { followed.username }
+  let(:following) { create(:user) }
+  let(:username) { following.username }
 
   context 'when the params are correct' do
     context 'when the user follows different user' do
@@ -19,13 +19,13 @@ RSpec.describe 'POST /api/users/:username/follow', type: :request do
 
       it 'creates follow' do
         subject
-        expect(followed.follower_users).to include(user)
-        expect(user.followed_users).to include(followed)
+        expect(following.follower_users).to include(user)
+        expect(user.following_users).to include(following)
       end
     end
 
     context 'when the user follows himself' do
-      let(:followed) { user }
+      let(:following) { user }
 
       it 'returns 422 status code' do
         subject
@@ -39,7 +39,7 @@ RSpec.describe 'POST /api/users/:username/follow', type: :request do
     end
 
     context 'when the user follows the same user twice' do
-      before { followed.follower_users << user }
+      before { following.follower_users << user }
 
       it 'returns 422 status code' do
         subject

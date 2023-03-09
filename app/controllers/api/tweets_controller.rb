@@ -27,7 +27,7 @@ module Api
     end
 
     def user
-      User.find_by!(username: params[:username])
+      User.find_by!(username: params[:user_username])
     end
 
     def tweet

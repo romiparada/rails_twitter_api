@@ -14,7 +14,7 @@ module Api
     end
 
     def follow
-      current_user.followed_users << user
+      current_user.following_users << user
       render status: :no_content
     end
 
