@@ -14,14 +14,14 @@ RSpec.describe Follow, type: :model do
     end
 
     context '#follows_himself' do
-      context 'when user follows himself' do
+      context 'when following and follower are not the same' do
         it 'does not add errors to follow' do
           subject.send(:follows_himself)
           expect(subject.errors[:follow]).to be_empty
         end
       end
 
-      context 'when user follows himself' do
+      context 'when following and follower are the same' do
         let(:following) { follower }
 
         it 'adds errors to follow' do
