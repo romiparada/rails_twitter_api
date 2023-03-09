@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'PUT /api/user', type: :request do
-  subject { put user_path, params:, headers:, as: :json }
+  subject { put user_path, params:, headers: }
 
   let(:user) { create(:user, :without_profile_data) }
   let(:headers) { auth_headers(user) }
@@ -15,6 +15,7 @@ RSpec.describe 'PUT /api/user', type: :request do
   let(:birthdate) { new_attributes[:birthdate] }
   let(:password) { new_attributes[:password] }
   let(:username) { new_attributes[:username] }
+  let(:profile_image) { fixture_file_upload('profile.jpeg', 'image/jpeg') }
 
   let(:params) do
     {
@@ -25,7 +26,8 @@ RSpec.describe 'PUT /api/user', type: :request do
         email:,
         birthdate:,
         password:,
-        username:
+        username:,
+        profile_image:
       }
     }
   end
@@ -46,6 +48,7 @@ RSpec.describe 'PUT /api/user', type: :request do
         expect(json_res['website']).to eq(user.website)
         expect(json_res['email']).to eq(user.email)
         expect(json_res['created_at']).to eq(user.created_at.strftime('%Y-%m-%d %H:%M:%S UTC'))
+        expect(json_res['profile_image']).to eq(rails_blob_path(user.profile_image))
       end
 
       it 'modifies user profile info' do
@@ -57,7 +60,8 @@ RSpec.describe 'PUT /api/user', type: :request do
             change { user.website }.to(eq(website)).and \
               change { user.email }.to(eq(email)).and \
                 change { user.valid_password?(password) }.to(be_truthy).and \
-                  change { user.username }.to(eq(username))
+                  change { user.username }.to(eq(username)).and \
+                    change { rails_blob_path(user.profile_image) }.to((include(profile_image.original_filename)))
       end
     end
 

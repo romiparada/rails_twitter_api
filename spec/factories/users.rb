@@ -25,5 +25,10 @@ FactoryBot.define do
       birthdate { nil }
       username { nil }
     end
+
+    after(:create) do |user|
+      user.profile_image.attach(io: Rails.root.join('spec/fixtures/files/default_profile.jpeg').open, filename: 'default_profile.jpeg',
+                                content_type: 'image/jpeg')
+    end
   end
 end

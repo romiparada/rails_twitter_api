@@ -147,5 +147,6 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:follower_users).through(:followers).source(:follower) }
     it { is_expected.to have_many(:followings).dependent(:destroy) }
     it { is_expected.to have_many(:following_users).through(:followings).source(:following) }
+    it { is_expected.to have_one_attached(:profile_image) }
   end
 end
