@@ -12,7 +12,7 @@ RSpec.describe 'POST /api/users/:username/unfollow', type: :request do
 
   context 'when the params are correct' do
     context 'when the user unfollows a following user' do
-      before { user.following_users << following }
+      let!(:follow) { create(:follow, follower: user, following:) }
 
       it 'returns 204 status code' do
         subject
@@ -20,9 +20,8 @@ RSpec.describe 'POST /api/users/:username/unfollow', type: :request do
       end
 
       it 'deletes follow' do
-        subject
-        expect(following.follower_users).not_to include(user)
-        expect(user.following_users).not_to include(following)
+        expect { subject }.to change { user.followings.count }.from(1).to(0)
+        expect { follow.reload }.to raise_exception(ActiveRecord::RecordNotFound)
       end
     end
 

@@ -19,8 +19,7 @@ module Api
     end
 
     def unfollow
-      user.follower_users.find(current_user.id)
-      user.follower_users.destroy(current_user)
+      current_user.following_users.find(user.id).destroy!
       render status: :no_content
     end
 
