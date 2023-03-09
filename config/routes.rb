@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   }
 
   scope '/api', module: :api, defaults: { format: :json } do
-    resource :user, only: %i[show update]
+    resource :user, only: %i[show update], controller: :user
 
     resources :tweets, only: %i[create show] do
       post :like, on: :member
