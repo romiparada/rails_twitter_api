@@ -86,17 +86,17 @@ RSpec.describe User, type: :model do
   end
 
   describe 'followers_count' do
+    subject { create(:user) }
+
     let(:follower) { create(:user) }
 
-    before { subject.save }
-
-    context 'when the username has a new follower' do
+    context 'when the user is followed by another user' do
       it 'increments followers_count' do
         expect { subject.follower_users << follower }.to(change { subject.followers_count }.from(0).to(1))
       end
     end
 
-    context 'when the username is unfollow' do
+    context 'when the user is unfollowed by another user' do
       it 'decrements followers_count' do
         subject.follower_users << follower
         expect { subject.follower_users.destroy(follower) }.to(change { subject.followers_count }.from(1).to(0))
@@ -105,17 +105,17 @@ RSpec.describe User, type: :model do
   end
 
   describe 'followings_count' do
+    subject { create(:user) }
+
     let(:following) { create(:user) }
 
-    before { subject.save }
-
-    context 'when the username follows other user' do
+    context 'when the user follows another user' do
       it 'increments followings_count' do
         expect { subject.following_users << following }.to(change { subject.followings_count }.from(0).to(1))
       end
     end
 
-    context 'when the username unfollows other user' do
+    context 'when the user unfollows another user' do
       it 'decrement followings_count' do
         subject.following_users << following
         expect { subject.following_users.destroy(following) }.to(change { subject.followings_count }.from(1).to(0))
