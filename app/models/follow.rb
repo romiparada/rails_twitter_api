@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Follow < ApplicationRecord
-  belongs_to :follower, class_name: 'User'
-  belongs_to :following, class_name: 'User'
+  belongs_to :follower, class_name: 'User', counter_cache: :followings_count, inverse_of: :followings
+  belongs_to :following, class_name: 'User', counter_cache: :followers_count, inverse_of: :followers
 
   validates :follower_id, uniqueness: { scope: :following_id }
 

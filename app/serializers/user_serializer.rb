@@ -9,6 +9,6 @@ class UserSerializer < ApplicationSerializer
 
   view :full do
     include_view :simple
-    fields :bio, :website, :email, :created_at, :tweets_count
+    fields :bio, :website, :email, :created_at, :tweets_count, :followers_count, :followings_count
   end
 end
