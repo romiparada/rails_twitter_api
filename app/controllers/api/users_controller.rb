@@ -18,6 +18,11 @@ module Api
       render status: :no_content
     end
 
+    def unfollow
+      current_user.following_users.find(user.id).destroy!
+      render status: :no_content
+    end
+
     private
 
     def user_params
