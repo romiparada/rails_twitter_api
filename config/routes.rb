@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       post :unfollow, on: :member
       get :followers, on: :member
       get :followings, on: :member
-      resources :tweets, only: :index
+      resources :tweets, only: :index, module: :users
     end
   end
 end
