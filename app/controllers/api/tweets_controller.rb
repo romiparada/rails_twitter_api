@@ -16,6 +16,14 @@ module Api
       render status: :no_content
     end
 
+    def feed
+      feed = Tweet.authored_by(current_user.following_users)
+                  .or(Tweet.liked_by(current_user.following_users)
+                            .where.not(user: current_user))
+                  .order(created_at: :desc)
+      render json: TweetSerializer.render(feed)
+    end
+
     private
 
     def tweets_params

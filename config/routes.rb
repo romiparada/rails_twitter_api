@@ -12,7 +12,10 @@ Rails.application.routes.draw do
 
     resources :tweets, only: %i[create show] do
       post :like, on: :member
+      get :feed, on: :collection
     end
+
+    get 'feed', action: :feed, controller: 'tweets'
 
     resources :users, only: [], param: :username, username: %r{[^/]+} do
       post :follow, on: :member
