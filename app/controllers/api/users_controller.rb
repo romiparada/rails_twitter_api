@@ -12,6 +12,10 @@ module Api
       render status: :no_content
     end
 
+    def followers
+      render json: UserSerializer.render(user.follower_users, view: :full)
+    end
+
     private
 
     def user
