@@ -16,6 +16,10 @@ module Api
       render json: UserSerializer.render(user.follower_users, view: :full)
     end
 
+    def followings
+      render json: UserSerializer.render(user.following_users, view: :full)
+    end
+
     private
 
     def user
