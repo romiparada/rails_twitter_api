@@ -16,7 +16,7 @@ module Api
     private
 
     def user_params
-      params.require(:user).permit(%i[name bio website email birthdate password username])
+      params.require(:user).permit(%i[name bio website email birthdate password username profile_image])
     end
   end
 end

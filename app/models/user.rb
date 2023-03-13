@@ -16,6 +16,8 @@ class User < ApplicationRecord
   has_many :follower_users, through: :followers, source: :follower
   has_many :following_users, through: :followings, source: :following
 
+  has_one_attached :profile_image
+
   validates :name, length: { minimum: 2 }, allow_blank: true
   validates :bio, length: { maximum: 160 }, allow_blank: true
   validates :website, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]) }, allow_blank: true
