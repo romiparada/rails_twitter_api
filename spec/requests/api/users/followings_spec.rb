@@ -18,7 +18,7 @@ RSpec.describe 'GET /api/users/:username/followings', type: :request do
       expect(response).to have_http_status(200)
     end
 
-    it 'returns followers of the user' do
+    it 'returns the users being followed by the user' do
       subject
       expect(json).to eq(JSON.parse(UserSerializer.render(follower_user.following_users, view: :full)))
     end
