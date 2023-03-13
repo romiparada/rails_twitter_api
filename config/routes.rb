@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :users, only: [], param: :username, username: %r{[^/]+} do
       post :follow, on: :member
       post :unfollow, on: :member
+      get :followers, on: :member
       resources :tweets, only: :index
     end
   end
